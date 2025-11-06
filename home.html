@@ -1,344 +1,406 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-bs-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sanket Jayant Dhawade - Portfolio</title>
+  <title>Sanket Dhawade - Portfolio</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Portfolio of Sanket Dhawade – Engineering student passionate about Data Science, Python, and Game Development." />
+  <meta name="keywords" content="Sanket Dhawade, Data Science, Python, Game Developer, Portfolio, Engineering Student" />
+  <meta name="author" content="Sanket Dhawade" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
   <style>
+    /* Base */
     body {
       scroll-behavior: smooth;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      padding-top: 70px;
+    }
+
+    /* Preloader */
+    #preloader {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, #007bff, #6610f2);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff, 0 0 20px #a29bfe, 0 0 30px #6c5ce7; }
+      to { text-shadow: 0 0 25px #dfe6e9, 0 0 35px #0984e3, 0 0 45px #6c5ce7; }
+    }
+
+    /* Scroll Progress */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 4px;
+      background: linear-gradient(to right, #007bff, #6610f2);
+      z-index: 10000;
+    }
+
+    /* Navbar */
+    .navbar {
+      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.6);
+      transition: background 0.4s ease;
+    }
+
+    .navbar.scrolled {
+      background: #6610f2 !important;
     }
 
     .navbar-brand {
       font-weight: bold;
+      letter-spacing: 0.5px;
     }
 
+    /* Hero */
+    #hero {
+      background: linear-gradient(to right, #007bff, #6610f2);
+      color: white;
+      text-align: center;
+      padding: 140px 20px;
+    }
+
+    #hero h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+    }
+
+    #typing {
+      font-size: 1.3rem;
+      margin-top: 10px;
+      opacity: 0.95;
+    }
+
+    /* Section spacing */
     section {
-      padding-top: 60px;
-      padding-bottom: 60px;
+      padding: 70px 0;
     }
 
-    /* Alternate background colors for sections */
-    #about,
-    #skills,
-    #hobbies {
-      background-color: #f8f9fa;
-    }
-
-    #projects,
-    #career {
-      background-color: #ffffff;
-    }
-
-    /* Small style tweaks for game cards */
-    .game-badge {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.375rem;
-      background: rgba(0, 0, 0, 0.06);
-      margin-right: 0.4rem;
-      font-size: 0.85rem;
-    }
-
+    /* Profile */
     .profile-img {
       max-width: 220px;
-      width: 100%;
-      height: auto;
-      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(102, 16, 242, 0.6);
     }
 
-    /* Make fixed-top navbar not cover sections on anchor links */
-    body {
-      padding-top: 70px;
+    /* Cards */
+    .card {
+      border: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
 
-    /* Hobbies images - make them same size and nicely cropped */
+    /* Buttons */
+    .btn-outline-dark:hover {
+      background: #6610f2;
+      color: white;
+    }
+
+    /* Back-to-top */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(to right, #007bff, #6610f2);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 22px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
     .hobby-img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      display: block;
-      margin: 0 auto 0.5rem;
+      width: 120px; height: 120px; object-fit: cover;
       border-radius: 10px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
     }
 
-    @media (max-width: 576px) {
-      .hobby-img {
-        width: 100px;
-        height: 100px;
-      }
+    .game-badge {
+      display: inline-block;
+      padding: 0.3rem 0.5rem;
+      border-radius: 0.375rem;
+      background: rgba(0, 0, 0, 0.06);
+      font-size: 0.85rem;
+      margin-right: 5px;
+    }
+
+    @media(max-width:768px){
+      #hero h2 { font-size: 2rem; }
+      #hero { padding: 100px 10px; }
     }
   </style>
 </head>
 
 <body>
+  <!-- Preloader -->
+  <div id="preloader">SD</div>
+
+  <!-- Scroll Progress -->
+  <div id="progress-bar"></div>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
     <div class="container">
-      <a class="navbar-brand" href="#about">Sanket J. Dhawade</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" href="#hero">Sanket Dhawade</a>
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navLinks">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse" id="navLinks">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
           <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-          <li class="nav-item"><a class="nav-link" href="#resume">Resume</a></li>
+          <li class="nav-item"><a class="nav-link" href="#achievements">Achievements</a></li>
           <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="#career">Career</a></li>
-          <li class="nav-item"><a class="nav-link" href="#hobbies">Hobbies</a></li>
         </ul>
+        <button id="theme-toggle" class="btn btn-outline-light ms-3"><i class="bi bi-moon-fill"></i></button>
       </div>
     </div>
   </nav>
 
-  <!-- About Me Section -->
-  <section id="about">
-    <div class="container mt-5">
-      <h2 class="mb-4">About Me</h2>
-      <div class="row align-items-center">
-        <div class="col-md-4 text-center">
-          <!-- Note: use a web-hosted image or place the image in your project folder for deployment -->
-          <img src="C:\Users\HP\Downloads\sanket photo.jpg" class="img-fluid rounded-circle mb-3 profile-img"
-            alt="Profile Picture" />
-        </div>
-        <div class="col-md-8">
-          <p>
-            Hello! I’m <strong>Sanket Jayant Dhawade</strong>, an ambitious engineering student passionate about
-            technology and innovation. I thrive on challenges and enjoy learning new skills to solve real-world
-            problems. My journey in engineering is driven by a desire to make a positive impact through creative
-            projects and continuous learning. I am dedicated, optimistic, and always eager to push the boundaries of
-            what I can achieve in the tech world.
-          </p>
-          <p>
-            <strong>Current focus:</strong> Data field (Plan A) • Game development (Plan B) — especially Android 2D
-            platformer games • Exploring data science and practical engineering projects.
-          </p>
-        </div>
-      </div>
+  <!-- Hero -->
+  <section id="hero">
+    <div class="container">
+      <h2>Hi, I'm <strong>Sanket Dhawade</strong></h2>
+      <p id="typing"></p>
+      <a href="#projects" class="btn btn-light mt-3">View My Work</a>
     </div>
   </section>
 
-  <!-- Projects Section -->
-  <section id="projects">
-    <div class="container">
-      <h2 class="mb-4">Projects</h2>
-      <div class="row">
-
-        <div class="col-md-6 col-lg-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">FarmHub</h5>
-              <p class="card-text">
-                FarmHub is a website project developed to connect farmers with local buyers. It features a
-                user-friendly interface where farmers can list their produce, and customers can easily search and
-                purchase fresh products. This project highlights responsive design, CRUD operations, and an engaging
-                UI.
-              </p>
-              <div class="mb-2">
-                <span class="game-badge">css</span>
-                <span class="game-badge">Html</span>
-                <span class="game-badge">JavaScript</span>
-                <span class="game-badge">Python</span>
-                <span class="game-badge">JSON</span>
-                <span class="game-badge">Flask</span>
-                <span class="game-badge">Scikit-learn</span>
-                <span class="game-badge">NumPy</span>
-                <span class="game-badge">Pandas</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- The Virtual Herbal Garden -->
-        <div class="col-md-6 col-lg-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">The Virtual Herbal Garden</h5>
-              <p class="card-text">
-                Developed an interactive platform to explore and learn about various herbs and their benefits.
-                Implemented dynamic filtering and search using JavaScript and JSON.
-                Focused on improving system performance, usability, and database optimization to support future scalability.
-              </p>
-              <div class="mb-2">
-                <span class="game-badge">css</span>
-                <span class="game-badge">Html</span>
-                <span class="game-badge">JavaScript</span>
-                <span class="game-badge">Python</span>
-                <span class="game-badge">JSON</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Online retail recommendation system -->
-        <div class="col-md-6 col-lg-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">Online retail recommendation system</h5>
-              <p class="card-text">
-                Developed a recommendation system to suggest products based on user preferences and purchase history.
-                Implemented data preprocessing and analysis using Python libraries like Pandas and Scikit-learn.
-                Leveraged machine learning algorithms (such as collaborative filtering) to improve product suggestions.
-              </p>
-              <div class="mb-2">
-                <span class="game-badge">Python</span>
-                <span class="game-badge">JSON</span>
-                <span class="game-badge">Scikit-learn</span>
-                <span class="game-badge">NumPy</span>
-                <span class="game-badge">Pandas</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Resume Section -->
-  <section id="resume">
-    <div class="container">
-      <h2 class="mb-4">Resume</h2>
-      <p>You can download my resume by clicking the link below:</p>
-      <a class="btn btn-primary" href="C:\Users\HP\Downloads\sanket resume.pdf" target="_blank">Download resume</a>
-    </div>
-  </section>
-
-  <!-- Skills Section -->
-  <section id="skills">
-    <div class="container">
-      <h2 class="mb-4">Skills</h2>
-      <div class="row">
-        <div class="col-md-6">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">HTML &amp; CSS</li>
-            <li class="list-group-item">JavaScript</li>
-            <li class="list-group-item">Bootstrap</li>
-            <li class="list-group-item">Python</li>
-            <li class="list-group-item">Pandas</li>
-            <li class="list-group-item">NumPy</li>
-            <li class="list-group-item">Matplotlib</li>
-            <li class="list-group-item">Seaborn</li>
-            <li class="list-group-item">Scikit-learn</li>
-            <li class="list-group-item">Flask</li>
-            <li class="list-group-item">SQL</li>
-          </ul>
-        </div>
-        <div class="col-md-6">
-          <h2>Tools </h2>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Git &amp; GitHub</li>
-            <li class="list-group-item">Problem Solving</li>
-            <li class="list-group-item">Power BI</li>
-            <li class="list-group-item">Jupyter Notebook</li>
-            <li class="list-group-item">VS Code</li>
-            <li class="list-group-item">Godot (GDScript)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact">
-    <div class="container">
-      <h2 class="mb-4">Contact Me</h2>
-      <form>
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Enter your name" />
-          </div>
-          <div class="col-md-6">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Type your email" />
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="message" class="form-label">Message</label>
-          <textarea class="form-control" id="message" rows="4" placeholder="Your message here..."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- Career Section -->
-  <section id="career">
-    <div class="container">
-      <h2 class="mb-4">Career</h2>
-      <p>
-        I am currently pursuing my Bachelor of Engineering in Information technology. As a dedicated student, I balance my
-        academics with projects and internships to build a strong foundation in software development. My career goal is
-        to become a proficient software engineer specializing in web development and to contribute to innovative tech
-        solutions. I am committed to continuous learning and excited about opportunities that challenge me to grow and
-        make an impact.
+  <!-- About -->
+  <section id="about" data-aos="fade-up">
+    <div class="container text-center">
+      <img src="C:\Users\HP\OneDrive\Documents\SANKET_PROJECT\my portfolio\sanket photo.jpg" alt="Sanket Dhawade" class="profile-img mb-4">
+      <p class="lead">
+        I'm an Engineering Student passionate about Data Science and Game Development. I enjoy solving challenges, building projects, and bringing ideas to life through code.
       </p>
     </div>
   </section>
 
-  <!-- Hobbies Section -->
-  <section id="hobbies">
+  <!-- Achievements -->
+  <section id="achievements" data-aos="fade-up">
     <div class="container">
-      <h2 class="mb-4">Hobbies &amp; Interests</h2>
-      <div class="row">
-        <div class="col-md-4 text-center mb-3">
-          <img src="C:\Users\HP\OneDrive\Documents\SANKET_PROJECT\my portfolio\1324921.png"
-            class="hobby-img mb-2" alt="Game Dev icon" />
+      <h2 class="mb-3 text-center"><i class="bi bi-trophy-fill me-3"></i>Achievements</h2>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Completed AICTE Internship – Python-based Data Visualization Dashboard.</li>
+        <li class="list-group-item">Final Year Project: FarmHub – Agricultural Produce Management System.</li>
+        <li class="list-group-item">Developed 2D Platformer Game Prototype using Godot Engine.</li>
+        <li class="list-group-item">Plasmid Internship -  Developed online Retail Recommendations system</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" data-aos="fade-up">
+    <div class="container text-center">
+      <h2 class="mb-4"><i class="bi bi-folder-fill me-2"></i>Latest GitHub Projects</h2>
+      <div id="github-projects" class="row"></div>
+      <a href="https://github.com/S4n9y" target="_blank" class="btn btn-primary mt-3">View All on GitHub</a>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" data-aos="fade-up" class="py-5 bg-light">
+  <div class="container">
+    <h2 class="mb-4 text-center">
+      <i class="bi bi-gear-wide-connected me-2"></i>Skills & Tools
+    </h2>
+
+    <!-- Skills & Tools Table -->
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle text-center shadow-sm">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Skills</th>
+            <th scope="col">Tools & Technologies</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Python (Core, Flask, Django)</td>
+            <td>VS Code, Jupyter Notebook</td>
+          </tr>
+          <tr>
+            <td>HTML, CSS, JavaScript</td>
+            <td>Bootstrap, Git, GitHub</td>
+          </tr>
+          <tr>
+            <td>SQL, Data Visualization</td>
+            <td>Power BI, Matplotlib</td>
+          </tr>
+          <tr>
+            <td>Data Handling & Analysis</td>
+            <td>Pandas, NumPy, Scikit-learn</td>
+          </tr>
+          <tr>
+            <td>Game Development</td>
+            <td>Godot Engine (GDScript)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Hobbies -->
+  <section id="hobbies" data-aos="fade-up">
+    <div class="container text-center">
+      <h2 class="mb-4"><i class="bi bi-controller me-2"></i>Hobbies</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-4 mb-3">
+          <img src="C:\Users\HP\OneDrive\Documents\SANKET_PROJECT\my portfolio\game img.png" class="hobby-img" alt="Game Development" />
           <h5>Game Development</h5>
-          <p>Designing & building 2D platformers, experimenting with mechanics, level design, and mobile optimization.</p>
         </div>
-        <div class="col-md-4 text-center mb-3">
-          <img src="C:\Users\HP\OneDrive\Documents\SANKET_PROJECT\my portfolio\download.png"
-            class="hobby-img mb-2" alt="Reading icon" />
+        <div class="col-md-4 mb-3">
+          <img src="C:\Users\HP\OneDrive\Documents\SANKET_PROJECT\my portfolio\reading.png" class="hobby-img" alt="Reading" />
           <h5>Reading</h5>
-          <p>Enjoy reading tech blogs, sci-fi novels, and staying updated with industry trends.</p>
         </div>
-        <div class="col-md-4 text-center mb-3">
-          <img src="C:\Users\HP\OneDrive\Documents\SANKET_PROJECT\my portfolio\nature icon.jpg"
-            class="hobby-img mb-2" alt="Nature icon" />
+        <div class="col-md-4 mb-3">
+          <img src="C:\Users\HP\OneDrive\Documents\SANKET_PROJECT\my portfolio\nature icon.jpg" class="hobby-img" alt="Nature Walks" />
           <h5>Nature Walks</h5>
-          <p>Loving nature and often going on hikes and walks to relax and find inspiration.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Social Media Section -->
-  <section id="social-media" class="bg-primary text-white py-4">
+  <!-- Contact -->
+  <section id="contact" data-aos="fade-up">
     <div class="container text-center">
-      <h5 class="mb-3">Connect with me</h5>
-      <a href="https://x.com/dhawade_sa57191?t=6nl03nX3u7hL6Ros8Y470g&s=08" target="_blank" class="text-white mx-3">
-        <i class="bi bi-twitter fs-3"></i>
-      </a>
-      <a href="https://youtube.com/@sanketchachannel?si=d4a9XLzjBsLpQP1k" target="_blank" class="text-white mx-3">
-        <i class="bi bi-youtube fs-3"></i>
-      </a>
-      <a href="https://github.com/your_github_username" target="_blank" class="text-white mx-3">
-        <i class="bi bi-github fs-3"></i>
-      </a>
-      <a href="https://www.linkedin.com/in/dhawade-sanket-jayant-640175259/" target="_blank" class="text-white mx-3">
-        <i class="bi bi-linkedin fs-3"></i>
-      </a>
+      <h2><i class="bi bi-envelope-fill me-2"></i>Contact Me</h2>
+      <p>Email: <strong>sanketdhawade2002@gmail.com</strong></p>
+      <p>
+        <a href="https://x.com/dhawade_sa57191" class="mx-2 text-dark"><i class="bi bi-twitter fs-3"></i></a>
+        <a href="https://www.youtube.com/@sanketchachannel" class="mx-2 text-dark"><i class="bi bi-youtube fs-3"></i></a>
+        <a href="https://github.com/S4n9y" class="mx-2 text-dark"><i class="bi bi-github fs-3"></i></a>
+        <a href="https://www.linkedin.com/in/sanket-dhawade-640175259/" class="mx-2 text-dark"><i class="bi bi-linkedin fs-3"></i></a>
+      </p>
     </div>
   </section>
 
-  <!-- Bootstrap JS (bundle includes Popper) -->
+  <button id="backToTop"><i class="bi bi-arrow-up-short"></i></button>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 
+  <script>
+    AOS.init({ duration: 1000, once: true });
+
+    // Preloader
+    window.addEventListener("load", () => {
+      document.getElementById("preloader").style.display = "none";
+    });
+
+    // Navbar scroll effect
+    const nav = document.querySelector(".navbar");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 50);
+    });
+
+    // Typing effect
+    const typingEl = document.getElementById("typing");
+    const texts = ["Engineering Student", "Data Enthusiast", "Game Developer"];
+    let idx = 0, charIdx = 0;
+    function type() {
+      if (charIdx < texts[idx].length) {
+        typingEl.textContent += texts[idx].charAt(charIdx);
+        charIdx++;
+        setTimeout(type, 120);
+      } else {
+        setTimeout(erase, 1000);
+      }
+    }
+    function erase() {
+      if (charIdx > 0) {
+        typingEl.textContent = texts[idx].substring(0, charIdx - 1);
+        charIdx--;
+        setTimeout(erase, 80);
+      } else {
+        idx = (idx + 1) % texts.length;
+        setTimeout(type, 300);
+      }
+    }
+    document.addEventListener("DOMContentLoaded", type);
+
+    // Scroll Progress
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      document.getElementById("progress-bar").style.width = progress + "%";
+    });
+
+    // Back to Top
+    const backToTop = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 400) backToTop.style.display = "flex";
+      else backToTop.style.display = "none";
+    });
+    backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    // Theme Toggle
+    document.getElementById('theme-toggle').addEventListener('click', function() {
+      const html = document.documentElement;
+      const theme = html.getAttribute('data-bs-theme');
+      html.setAttribute('data-bs-theme', theme === 'light' ? 'dark' : 'light');
+      this.innerHTML = theme === 'light' ? '<i class="bi bi-sun-fill"></i>' : '<i class="bi bi-moon-fill"></i>';
+    });
+
+    // GitHub Projects
+    fetch("https://api.github.com/users/S4n9y/repos?sort=updated&per_page=3")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("github-projects");
+        data.forEach(repo => {
+          const div = document.createElement("div");
+          div.className = "col-md-4 mb-3";
+          div.innerHTML = `
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">${repo.name}</h5>
+                <p class="card-text">${repo.description || "No description provided."}</p>
+                <p><span class="badge bg-primary">${repo.language || "N/A"}</span></p>
+                <a href="${repo.html_url}" target="_blank" class="btn btn-outline-dark btn-sm">View Repo</a>
+              </div>
+            </div>`;
+          container.appendChild(div);
+        });
+      });
+  </script>
 </body>
-
 </html>
